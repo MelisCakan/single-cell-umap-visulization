@@ -14,5 +14,28 @@ app_ui = ui.page_fluid(
     ui.output_image("output_image")
 )
 
+def server(input, output, session):
+    
+    @output
+    @render.text
+    def output_message():
+        if not input.file_input():
+            return "No file uploaded yet."
+        return "File uploaded successfully! Processing..."
+    
+    @output
+    @render.plot
+    def output_image():
+        if not input.file_input():
+            return None
+
+        file_path = input.file_input()[0]["datapath"]
+        
+        h5ad_file = f.extractzip(file_path)       
+        if not h5ad_file:
+            return "No .h5ad file found in the zip."
+        
+        fig = f.umap_process(h5ad_file)  
+        return fig 
 
 
