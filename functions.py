@@ -1,5 +1,8 @@
 import zipfile
 import os
+from shiny import App, ui, render
+import scanpy
+import matplotlib.pyplot as plt
 
 def extractzip(zip_path):
 
@@ -18,3 +21,21 @@ def extractzip(zip_path):
         
     if h5ad_file == "":
         print("There is no h5ad file in this zip folder.")
+
+def umap_process(data):
+    adata = scanpy.read(data)
+    scanpy.pp.calculate_qc_metrics(adata, percent_top=None, log1p=False, inplace=True)
+    adata.raw = adata
+    scanpy.pp.filter_cells(adata, min_genes=200) # Remove cells with more than 200 and less than 8000 detected genes
+    scanpy.pp.filter_cells(adata, max_genes=8000) # Remove cells with more than 200 and less than 8000 detected genes
+    scanpy.pp.filter_genes(adata, min_cells=3) # Remove genes detected in less than 3 cells
+    scanpy.pp.normalize_total(adata, target_sum=1e4) # normalize with counts per million
+    scanpy.pp.log1p(adata)
+    scanpy.pp.highly_variable_genes(adata, min_mean=0.0125, max_mean=3, min_disp=0.5)
+    adata = adata[:, adata.var.highly_variable]
+    scanpy.pp.scale(adata, max_value=10) # subtract the mean expression value and divide by the standard deviation
+    scanpy.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
+    scanpy.tl.umap(adata)
+    scanpy.pl.umap(adata, show=False)
+    fig = plt.gcf
+    return fig 
