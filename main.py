@@ -39,3 +39,4 @@ def server(input, output, session):
         return fig 
 
 app = App(app_ui, server)
+app.run()
