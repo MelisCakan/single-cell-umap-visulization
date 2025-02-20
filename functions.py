@@ -39,5 +39,5 @@ def umap_process(data):
     scanpy.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
     scanpy.tl.umap(adata)
     scanpy.pl.umap(adata, show=False)
-    fig = plt.gcf
+    fig = plt.gcf()
     return fig 

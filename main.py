@@ -40,7 +40,7 @@ def server(input, output, session):
         
         h5ad_file = f.extractzip(file_path)       
         if not h5ad_file:
-            return None  # Değiştirildi!
+            return None 
 
         fig = f.umap_process(h5ad_file)  
         return fig 
