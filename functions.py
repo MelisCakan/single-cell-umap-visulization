@@ -21,6 +21,8 @@ def extractzip(zip_path):
         
     if h5ad_file == "":
         print("There is no h5ad file in this zip folder.")
+    
+    return h5ad_file
 
 def umap_process(data):
     adata = scanpy.read(data)

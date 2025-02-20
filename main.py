@@ -21,6 +21,13 @@ def server(input, output, session):
     def output_message():
         if not input.file_input():
             return "No file uploaded yet."
+
+        file_path = input.file_input()[0]["datapath"]
+        h5ad_file = f.extractzip(file_path)
+
+        if not h5ad_file:
+            return "No .h5ad file found in the zip."
+
         return "File uploaded successfully! Processing..."
     
     @output
@@ -33,8 +40,8 @@ def server(input, output, session):
         
         h5ad_file = f.extractzip(file_path)       
         if not h5ad_file:
-            return "No .h5ad file found in the zip."
-        
+            return None  # Değiştirildi!
+
         fig = f.umap_process(h5ad_file)  
         return fig 
 
