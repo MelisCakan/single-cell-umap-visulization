@@ -1,9 +1,5 @@
-import scanpy as sc
-import matplotlib.pyplot as plt
-from shiny import reactive, App, ui
+from shiny import App, ui
 from shiny.express import render, input
-import os
-import zipfile
 import functions as f
 
 app_ui = ui.page_fluid(
