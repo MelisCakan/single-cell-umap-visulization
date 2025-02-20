@@ -3,6 +3,7 @@ import os
 from shiny import App, ui, render
 import scanpy
 import matplotlib.pyplot as plt
+import tempfile
 
 def extractzip(zip_path):
 
@@ -39,5 +40,8 @@ def umap_process(data):
     scanpy.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
     scanpy.tl.umap(adata)
     scanpy.pl.umap(adata, show=False)
-    fig = plt.gcf()
-    return fig 
+
+    temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+    plt.savefig(temp_file.name, bbox_inches='tight')  # PNG olarak kaydet
+    plt.close()
+    return temp_file.name
