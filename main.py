@@ -1,12 +1,12 @@
 import scanpy as sc
 import matplotlib.pyplot as plt
-from shiny import reactive
+from shiny import reactive, App
 from shiny.express import ui, render, input
 import os
 import zipfile
 import functions as f
 
-app_ui = ui.page_fluid(
+app_ui = ui.page(
     ui.tags.h1("UMAP Visulization Tool", class_ = "title"),
     ui.tags.label("Your zip file must contain a h5ad file to create an umap."),
     ui.input_file("file_input", "Upload a zip file.", accept=".zip"),
@@ -38,4 +38,4 @@ def server(input, output, session):
         fig = f.umap_process(h5ad_file)  
         return fig 
 
-
+app = App(app_ui, server)
