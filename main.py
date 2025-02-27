@@ -1,6 +1,6 @@
 from shiny import App, ui
 from shiny.express import render, input
-import functions as f
+from functions import umap_process, extractzip
 
 app_ui = ui.page_fluid(
     ui.head_content(ui.tags.link(rel="stylesheet", href="styles.css")),
@@ -20,7 +20,7 @@ def server(input, output, session):
             return "No file uploaded yet."
 
         file_path = input.file_input()[0]["datapath"]
-        h5ad_file = f.extractzip(file_path)
+        h5ad_file = extractzip(file_path)
 
         if not h5ad_file:
             return "No .h5ad file found in the zip."
@@ -34,11 +34,11 @@ def server(input, output, session):
             return None
 
         file_path = input.file_input()[0]["datapath"]
-        h5ad_file = f.extractzip(file_path)  
+        h5ad_file = extractzip(file_path)  
         if not h5ad_file:
             return None
 
-        image_path = f.umap_process(h5ad_file)
+        image_path = umap_process(h5ad_file)
 
         return {"src": image_path, "alt": "UMAP Visualization"}
     
