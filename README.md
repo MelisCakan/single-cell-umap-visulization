@@ -31,7 +31,7 @@ pip install -r requirement.txt
 ```
 python main.py
 ```
-4. **Open the provided local URL in a web browser to access the web application.
+4. **Open the provided local URL in a web browser to access the web application.**
 
 ### How The Web Application Works
 1. User uploads a .zip file that contains a .h5ad file.
