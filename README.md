@@ -38,5 +38,11 @@ python main.py
 2. The application extracts it, gets the .h5ad file. Then processes the file to create the UMAP visualization.
 3. After some time, the UMAP Visualization is being displayed.
 
+### How The Web Application Looks Like
+
+#### Before The Data
+![Before the Data](./assets/withoutdata.png)
+#### After The Data
+![After the Data](./assets/withdata.png)
 ### License
 This project is licensed under the MIT License.
