@@ -6,22 +6,29 @@ import matplotlib.pyplot as plt
 import tempfile
 
 def extractzip(zip_path):
-
-    extract_folder = "./data" #extract files to a new folder named data
-
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        
-        zip_ref.extractall(extract_folder)
-        print(f"{zip_path} has extracted.")
-
+    extract_folder = "./data"  #extract files to a new folder named data
     h5ad_file = ""
-    for file_name in os.listdir(extract_folder):
-        if file_name.endswith('.h5ad'):  #find the h5ad data in the zip file
-            h5ad_file = os.path.join(extract_folder, file_name)
-            break
+    
+    try:
+        if not os.path.exists(zip_path):
+            raise FileNotFoundError(f"The file '{zip_path}' does not exist.")
         
-    if h5ad_file == "":
-        print("There is no h5ad file in this zip folder.")
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_folder)
+            print(f"{zip_path} has been extracted.")
+        
+        for file_name in os.listdir(extract_folder):
+            if file_name.endswith('.h5ad'):  #find the h5ad data in the zip file
+                h5ad_file = os.path.join(extract_folder, file_name)
+                break
+        
+        if not h5ad_file:
+            raise FileNotFoundError("There is no .h5ad file in this zip folder.")
+        
+    except zipfile.BadZipFile:
+        raise zipfile.BadZipFile("The provided file is not a valid ZIP archive.")
+    except Exception as e:
+        raise RuntimeError(f"An error occurred while extracting the zip file: {e}")
     
     return h5ad_file
 
