@@ -1,6 +1,7 @@
 from shiny import App, ui
 from shiny.express import render, input
 from functions import umap_process, extractzip
+import os
 
 app_ui = ui.page_fluid(
     ui.head_content(ui.tags.link(rel="stylesheet", href="styles.css")),
@@ -41,6 +42,17 @@ def server(input, output, session):
         image_path = umap_process(h5ad_file)
 
         return {"src": image_path, "alt": "UMAP Visualization"}
+    
+    folder_path = "./data"  
+
+    @session.on_ended
+    def clean_the_data():
+        if os.path.exists(folder_path):
+            for file in os.listdir(folder_path):
+                file_path = os.path.join(folder_path, file)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)  
+            os.rmdir(folder_path)  
     
 app = App(app_ui, server)
 app.run()
