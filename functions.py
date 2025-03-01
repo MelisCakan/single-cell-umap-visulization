@@ -39,7 +39,7 @@ def umap_process(data):
     scanpy.pp.scale(adata, max_value=10) # subtract the mean expression value and divide by the standard deviation
     scanpy.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
     scanpy.tl.umap(adata)
-    scanpy.pl.umap(adata, show=False)
+    scanpy.pl.umap(adata, color= "Cell type", show=False)
 
     return umap_visualization()
 
