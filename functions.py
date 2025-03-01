@@ -41,6 +41,9 @@ def umap_process(data):
     scanpy.tl.umap(adata)
     scanpy.pl.umap(adata, show=False)
 
+    return umap_visualization()
+
+def umap_visualization():
     temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
     plt.savefig(temp_file.name, bbox_inches='tight')  # PNG olarak kaydet
     plt.close()
