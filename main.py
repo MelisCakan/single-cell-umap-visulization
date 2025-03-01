@@ -3,7 +3,7 @@ from shiny.express import render, input
 from functions import umap_process, extractzip
 import os
 
-app_ui = ui.page_fluid(
+app_ui = ui.page_fluid( #user-interface
     ui.head_content(ui.tags.link(rel="stylesheet", href="styles.css")),
     ui.h1("UMAP Visulization Tool", class_ = "title"),
     ui.p("Your zip file must contain a h5ad file to create an umap."),
@@ -12,38 +12,38 @@ app_ui = ui.page_fluid(
     ui.output_image("output_image")
 )
 
-def server(input, output, session):
+def server(input, output, session): #defining server
     
     @output
-    @render.text
+    @render.text #for output text
     def output_message():
         if not input.file_input():
             return "No file uploaded yet."
 
         file_path = input.file_input()[0]["datapath"]
-        h5ad_file = extractzip(file_path)
+        h5ad_file = extractzip(file_path) #extract to check h5ad file
 
         if not h5ad_file:
             return "No .h5ad file found in the zip."
 
-        return "File uploaded successfully! Processing..."
+        return "File processed successfully! Here is the umap visualization:"
     
     @output
-    @render.image
+    @render.image #for output image
     def output_image():
         if not input.file_input():
             return None
 
         file_path = input.file_input()[0]["datapath"]
-        h5ad_file = extractzip(file_path)  
+        h5ad_file = extractzip(file_path)  #extract to process h5ad
         if not h5ad_file:
             return None
 
         image_path = umap_process(h5ad_file)
 
-        return {"src": image_path, "alt": "UMAP Visualization"}
+        return {"src": image_path, "alt": "UMAP Visualization"} #add html tags to image
     
-    folder_path = "./data"  
+    folder_path = "./data"  #to delete data that came as an input from the user
 
     @session.on_ended
     def clean_the_data():
@@ -54,5 +54,5 @@ def server(input, output, session):
                     os.remove(file_path)  
             os.rmdir(folder_path)  
     
-app = App(app_ui, server)
-app.run()
+app = App(app_ui, server) #define the app
+app.run() #run the app

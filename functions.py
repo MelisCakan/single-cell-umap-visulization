@@ -7,7 +7,7 @@ import tempfile
 
 def extractzip(zip_path):
 
-    extract_folder = "./data"
+    extract_folder = "./data" #extract files to a new folder named data
 
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         
@@ -16,7 +16,7 @@ def extractzip(zip_path):
 
     h5ad_file = ""
     for file_name in os.listdir(extract_folder):
-        if file_name.endswith('.h5ad'):  
+        if file_name.endswith('.h5ad'):  #find the h5ad data in the zip file
             h5ad_file = os.path.join(extract_folder, file_name)
             break
         
@@ -39,12 +39,12 @@ def umap_process(data):
     scanpy.pp.scale(adata, max_value=10) # subtract the mean expression value and divide by the standard deviation
     scanpy.pp.neighbors(adata, n_neighbors=10, n_pcs=40)
     scanpy.tl.umap(adata)
-    scanpy.pl.umap(adata, color= "Cell type", show=False)
+    scanpy.pl.umap(adata, color= "Cell type", show=False) #generate umap
 
     return umap_visualization()
 
 def umap_visualization():
     temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    plt.savefig(temp_file.name, bbox_inches='tight')  # PNG olarak kaydet
+    plt.savefig(temp_file.name, bbox_inches='tight')  #return as a png to apply css
     plt.close()
     return temp_file.name
